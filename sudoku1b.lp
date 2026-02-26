@@ -13,7 +13,7 @@
 val(1..domain).
 
 %for every cell, get 1 value
-{ sudoku(R,C,V) : V = 1..domain } = 1 :- R = 1..domain, C = 1..domain.
+{ sudoku(R,C,V) : val(V) } = 1 :- val(R), val(C).
 
 %initials
 sudoku(R,C,V) :- initial(R,C,V).
@@ -22,4 +22,10 @@ sudoku(R,C,V) :- initial(R,C,V).
 :- sudoku(R, C1, V), sudoku(R, C2, V), C1 != C2.
 :- sudoku(R1, C, V), sudoku(R2, C, V), R1 != R2.
 
+%subgrid divided by total size
+%goes from 4 values to 3 as per instructions
+%G calculations work by stratifying the rows, 1*3, 2*3, 3*3  + column modifier
+subgrid(R,C,G) :- val(R), val(C), SR = (R-1) / subgridsize, SC = (C-1) / subgridsize, G = 1 + (SR * subgridsize + SC).
+
 #show sudoku/3.
+#show subgrid/3.
